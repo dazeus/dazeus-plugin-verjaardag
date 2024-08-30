@@ -1,0 +1,38 @@
+DaZeus verjaardagsmodule.
+
+Netwerk/channel zijn hardcoded in main.go. De bot joint dit channel vanzelf.
+
+Bij het opstarten, vragen we alle geboortedata op via CardDAV. Een voorbeeld
+CardDAV-URL is https://jij%40idm.hashru.nl:jewachtwoord@contacts.hashru.nl/.
+Zodra dat voor het eerst is gelukt, gaan we verder met opstarten, en blijven we
+elk uur CardDAV refreshen. Daardoor kun je in principe dezelfde dag nog je
+verjaardag instellen, en krijgt de plugin het dezelfde dag nog mee.
+
+Daarna verbinden we met IRC, en halen we in een loop de verjaardagen van
+vandaag op. Als de set verjaardagen verandert, feliciteren we iedereen opnieuw.
+
+Om de plugin te installeren, doe je eerst een `go build` om een binary te maken:
+
+```
+go build .
+```
+
+Dat kan eventueel ook met GOOS/GOARCH als je voor een ander platform wil bouwen:
+
+```
+GOOS=linux GOARCH=amd64 go build .
+```
+
+Daarna kun je de volgende Plugin toevoegen aan DaZeus:
+
+```
+<Plugin verjaardag>
+	Path /var/dazeus/dazeus-plugin-verjaardag
+	Executable dazeus-plugin-verjaardag
+	Scope Global
+	Parameters %s "https://jij%40idm.hashru.nl:jewachtwoord@contacts.hashru.nl/"
+</Plugin>
+```
+
+Als je nu DaZeus opstart (of herlaadt met SIGHUP) dan gaat je bot vrolijk
+feliciteren :-)
